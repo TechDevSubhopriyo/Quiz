@@ -10,16 +10,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ViewAnimator;
 
+import java.io.FileOutputStream;
+
 public class Home extends AppCompatActivity {
 
-    Button a,p;
+    Button a1,p,r;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        a=findViewById(R.id.button3);
+        a1=findViewById(R.id.button3);
         p=findViewById(R.id.button4);
-        a.setOnClickListener(new View.OnClickListener() {
+        r=findViewById(R.id.button5);
+        a1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(Home.this,Add.class);
@@ -31,6 +34,12 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i=new Intent(Home.this,MainActivity.class);
                 startActivity(i);
+            }
+        });
+        r.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reset();
             }
         });
     }
@@ -50,6 +59,34 @@ public class Home extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
+                    }
+                });
+        AlertDialog a=alt.create();
+        a.show();
+    }
+    public void reset()
+    {
+        AlertDialog.Builder alt=new AlertDialog.Builder(this);
+        alt.setTitle("Attention!")
+                .setCancelable(false)
+                .setMessage("Are you sure you want to reset?")
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FileOutputStream fos=null;
+                        try {
+                            fos = openFileOutput("Quiz", MODE_PRIVATE);
+                            fos.write("".getBytes());
+                        }catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 });
         AlertDialog a=alt.create();
